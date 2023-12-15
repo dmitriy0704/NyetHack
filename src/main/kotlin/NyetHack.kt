@@ -11,9 +11,11 @@ fun main() {
     narrate("$heroName, ${createTitle(heroName)}  heads to the town square")
 }
 
-private fun createTitle(heroName: String): String {
+private fun createTitle(name: String): String {
     return when {
-        heroName.count { it.lowercase() in "aeiou" } > 4 -> "The Master of Vowel"
+        name.all {it.isDigit()} -> "The Identifiable"
+        name.none {it.isLetter()} -> "The Witness Protection Member"
+        name.count { it.lowercase() in "aeiou" } > 4 -> "The Master of Vowel"
         else -> "The Renowned Hero"
     }
 }

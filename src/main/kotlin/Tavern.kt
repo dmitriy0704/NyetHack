@@ -1,14 +1,21 @@
-import java.util.*
+import java.io.File
 
 private const val TAVERN_MASTER = "Taernyl"
 private const val TAVERN_NAME = "$TAVERN_MASTER`s Folly"
+private val menuData = File("data/tavern-menu-data.txt")
+    .readText()
+    .split("\n")
+private val menuItems = List(menuData.size) { index ->
+    val (_, name, _) = menuData[index].split(",")
+    name
+}
+
 
 fun visitTavern() {
     narrate("$heroName enters $TAVERN_NAME")
+    narrate("There are several items for sale:")
+    println(menuItems)
 
-    //listOf - неизменяемый список
-//    val patrons: List<String> = listOf("Eli", "Mordoc", "Sophie")
-    //mutableListOf - изменяемый список
     val patrons = mutableListOf("Eli", "Mordoc", "Sophie")
 
     val eliMessage = if (patrons.contains("Eli")) {
@@ -25,31 +32,20 @@ fun visitTavern() {
     }
     println(othersMessage)
 
-    for(patron in patrons){
-        println("Good evening, $patron ")
+    patrons.forEachIndexed { index, patron ->
+        println("Good evening, $patron, you ${index + 1} in line")
+//        placeOrder(patron, "Dragon`s Breath")
+        placeOrder(patron, menuItems.random())
     }
 
-
-
-// для mutableListOf:
-//    narrate("Eli leaves the tavern")
-//    patrons.remove("Ele")
-//    narrate("Alex enters the tavern")
-//    patrons.add("Alex")
-//    println(patrons)
-//    patrons.add(0, "VIP")
-//    println(patrons)
-//    patrons[0] = "Alexis"
-//    println(patrons)
-//    println(patrons[0])
-//    println(
-//        patrons
-//            .map { it.uppercase(Locale.getDefault()) }
-//            .filter { it.length < 4 }
-//    )
-//    println(patrons.first())
-//    println(patrons.last())
-//
-//    patrons.getOrNull(4) ?: "Unknown Patron"
-//    patrons.getOrElse(4) { "Unknown Patron" }
+//    menuData.forEachIndexed { index, data ->
+//        println("$index: $data")
+//    }
 }
+
+fun placeOrder(patronName: String, menuItemName: String) {
+    narrate("$patronName speaks with $TAVERN_MASTER to place an order")
+    narrate("$TAVERN_MASTER hands $patronName a $menuItemName")
+}
+
+

@@ -6,7 +6,11 @@ private const val TAVERN_NAME = "$TAVERN_MASTER`s Folly"
 fun visitTavern() {
     narrate("$heroName enters $TAVERN_NAME")
 
-    val patrons: List<String> = listOf("Eli", "Mordoc", "Sophie")
+    //listOf - неизменяемый список
+//    val patrons: List<String> = listOf("Eli", "Mordoc", "Sophie")
+    //mutableListOf - изменяемый список
+    val patrons = mutableListOf("Eli", "Mordoc", "Sophie")
+
     val eliMessage = if (patrons.contains("Eli")) {
         "$TAVERN_MASTER says: Eli`s in the back playing cards"
     } else {
@@ -21,6 +25,22 @@ fun visitTavern() {
     }
     println(othersMessage)
 
+    for(patron in patrons){
+        println("Good evening, $patron ")
+    }
+
+
+
+// для mutableListOf:
+//    narrate("Eli leaves the tavern")
+//    patrons.remove("Ele")
+//    narrate("Alex enters the tavern")
+//    patrons.add("Alex")
+//    println(patrons)
+//    patrons.add(0, "VIP")
+//    println(patrons)
+//    patrons[0] = "Alexis"
+//    println(patrons)
 //    println(patrons[0])
 //    println(
 //        patrons

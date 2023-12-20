@@ -2,6 +2,9 @@ import java.io.File
 
 private const val TAVERN_MASTER = "Taernyl"
 private const val TAVERN_NAME = "$TAVERN_MASTER`s Folly"
+private val firstNames = setOf("Alex", "Mordoc", "Sophie", "Tariq")
+private val lastNames =
+    setOf("Ironfoot", "Fernsworth", "Baggins", "Downstrider")
 private val menuData = File("data/tavern-menu-data.txt")
     .readText()
     .split("\n")
@@ -10,42 +13,23 @@ private val menuItems = List(menuData.size) { index ->
     name
 }
 
-
 fun visitTavern() {
     narrate("$heroName enters $TAVERN_NAME")
     narrate("There are several items for sale:")
-    println(menuItems)
-
-    val patrons = mutableListOf("Eli", "Mordoc", "Sophie")
-
-    val eliMessage = if (patrons.contains("Eli")) {
-        "$TAVERN_MASTER says: Eli`s in the back playing cards"
-    } else {
-        "$TAVERN_MASTER says: Eli isn`t here"
-    }
-    println(eliMessage)
-
-    val othersMessage = if (patrons.containsAll(listOf("Mordoc", "Sophie"))) {
-        "$TAVERN_MASTER says: Sophie and Mordoc are seated by the stew kettle"
-    } else {
-        "$TAVERN_MASTER says: Sophie and Mordoc aren't with each other right now"
-    }
-    println(othersMessage)
-
-    patrons.forEachIndexed { index, patron ->
-        println("Good evening, $patron, you ${index + 1} in line")
-//        placeOrder(patron, "Dragon`s Breath")
-        placeOrder(patron, menuItems.random())
+    println(menuItems.joinToString())
+    val patrons: MutableSet<String> = mutableSetOf()
+    while (patrons.size < 10) {
+        patrons += "${firstNames.random()} ${lastNames.random()}"
     }
 
-//    menuData.forEachIndexed { index, data ->
-//        println("$index: $data")
-//    }
+    narrate("$heroName sees several patrons in the tavern:")
+    narrate(patrons.joinToString())
+    repeat(3) {
+        placeOrder(patrons.random(), menuItems.random())
+    }
 }
 
 fun placeOrder(patronName: String, menuItemName: String) {
     narrate("$patronName speaks with $TAVERN_MASTER to place an order")
     narrate("$TAVERN_MASTER hands $patronName a $menuItemName")
 }
-
-

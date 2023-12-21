@@ -3,11 +3,8 @@ import java.io.File
 private const val TAVERN_MASTER = "Taernyl"
 private const val TAVERN_NAME = "$TAVERN_MASTER`s Folly"
 private val firstNames = setOf("Alex", "Mordoc", "Sophie", "Tariq")
-private val lastNames =
-    setOf("Ironfoot", "Fernsworth", "Baggins", "Downstrider")
-private val menuData = File("data/tavern-menu-data.txt")
-    .readText()
-    .split("\n")
+private val lastNames = setOf("Ironfoot", "Fernsworth", "Baggins", "Downstrider")
+private val menuData = File("data/tavern-menu-data.txt").readText().split("\n")
 private val menuItems = List(menuData.size) { index ->
     val (_, name, _) = menuData[index].split(",")
     name
@@ -18,9 +15,18 @@ fun visitTavern() {
     narrate("There are several items for sale:")
     println(menuItems.joinToString())
     val patrons: MutableSet<String> = mutableSetOf()
+
+    val patronGold: Map<String, Double> = mapOf(
+        TAVERN_MASTER to 86.00,
+        heroName to 4.50
+    )
+
     while (patrons.size < 10) {
         patrons += "${firstNames.random()} ${lastNames.random()}"
     }
+
+    println(patronGold)
+    println(patronGold.getOrDefault("Madrigal",0.0))
 
     narrate("$heroName sees several patrons in the tavern:")
     narrate(patrons.joinToString())

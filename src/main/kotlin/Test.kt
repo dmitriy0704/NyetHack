@@ -1,4 +1,7 @@
 fun main() {
-    val x = listOf(mutableListOf(1, 2, 3))
-    val y = listOf(mutableListOf(1, 2, 3))
+    val maps = mutableMapOf(
+        "a" to 1,
+        "b" to 2
+    )
+    println(maps)
 }

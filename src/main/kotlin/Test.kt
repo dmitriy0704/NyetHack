@@ -1,7 +1,5 @@
 fun main() {
-    val maps = mutableMapOf(
-        "a" to 1,
-        "b" to 2
-    )
-    println(maps)
+    val numbers: List<String> = listOf("1.0", "2.0", "3.0")
+    val numberToDouble: List<Double> = numbers.map { it.toDouble() }
+    println(numberToDouble)
 }

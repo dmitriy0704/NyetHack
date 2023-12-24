@@ -23,18 +23,18 @@ fun visitTavern() {
     narrate("There are several items for sale:")
     println(menuItems.joinToString())
 
+    val patrons: MutableSet<String> = firstNames
+        .shuffled()
+        .zip(lastNames.shuffled()) { firstName, lastname -> "$firstName $lastname" }
+        .toMutableSet()
 
-
-    val patrons: MutableSet<String> = mutableSetOf()
     val patronGold = mutableMapOf(
         TAVERN_MASTER to 86.00,
-        heroName to 4.50
+        heroName to 4.50,
+        *patrons.map { it to 6.00 }.toTypedArray()
     )
-    while (patrons.size < 5) {
-        val patronName = "${firstNames.random()} ${lastNames.random()}"
-        patrons += patronName
-        patronGold += patronName to 6.0
-    }
+
+
     narrate("$heroName sees several patrons in the tavern:")
     narrate(patrons.joinToString())
 
@@ -44,13 +44,38 @@ fun visitTavern() {
         placeOrder(patrons.random(), menuItems.random(), patronGold)
     }
     displayPatronBalances(patronGold)
+
+    val departingPatrons: List<String> = patrons
+        .filter { patron -> patronGold.getOrDefault(patron, 0.0) < 4.0 }
+    patrons -= departingPatrons
+    patronGold -= departingPatrons
+    departingPatrons.forEach { patron ->
+        narrate("$heroName sees $patron departing the tavern")
+    }
+    narrate("There are still some patrons in the tavern")
+    narrate(patrons.joinToString())
+
+    println("fold():")
+
+    val orderSubTotal = menuItemPrices.getOrDefault("Dragon's Breath", 0.0)
+    val salesTaxPercent = 5
+    val gratuityPercent = 20
+    val feePercentage: List<Int> = listOf(salesTaxPercent, gratuityPercent)
+    val orderTotal: Double = feePercentage.fold(orderSubTotal) { acc, percent ->
+        acc * (acc * 1 + percent / 100.00)
+    }
+    println("Order subtotal: $orderSubTotal")
+    println("Order total: $orderTotal")
+
+
 }
 
-private fun getFavoriteMenuItems(patron: String): List<String>{
-    return when(patron) {
-        "Alex Ironfoot" -> menuItems.filter {menuItem ->
+private fun getFavoriteMenuItems(patron: String): List<String> {
+    return when (patron) {
+        "Alex Ironfoot" -> menuItems.filter { menuItem ->
             menuItemTypes[menuItem]?.contains("desert") == true
         }
+
         else -> menuItems.shuffled().take(Random.nextInt(1..2))
     }
 }

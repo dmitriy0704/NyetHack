@@ -34,7 +34,6 @@ fun visitTavern() {
         *patrons.map { it to 6.00 }.toTypedArray()
     )
 
-
     narrate("$heroName sees several patrons in the tavern:")
     narrate(patrons.joinToString())
 
@@ -55,8 +54,6 @@ fun visitTavern() {
     narrate("There are still some patrons in the tavern")
     narrate(patrons.joinToString())
 
-    println("fold():")
-
     val orderSubTotal = menuItemPrices.getOrDefault("Dragon's Breath", 0.0)
     val salesTaxPercent = 5
     val gratuityPercent = 20
@@ -66,8 +63,6 @@ fun visitTavern() {
     }
     println("Order subtotal: $orderSubTotal")
     println("Order total: $orderTotal")
-
-
 }
 
 private fun getFavoriteMenuItems(patron: String): List<String> {
@@ -75,7 +70,6 @@ private fun getFavoriteMenuItems(patron: String): List<String> {
         "Alex Ironfoot" -> menuItems.filter { menuItem ->
             menuItemTypes[menuItem]?.contains("desert") == true
         }
-
         else -> menuItems.shuffled().take(Random.nextInt(1..2))
     }
 }

@@ -52,19 +52,7 @@ class Tavern : Room(TAVERN_NAME) {
         narrate("${player.name} sees several patrons in the tavern:")
         narrate(patrons.joinToString())
         narrate("The item of the day is the $itemOfDay")
-        repeat(3) {
-            placeOrder(patrons.random(), menuItems.random())
-        }
-
-        val departingPatrons: List<String> = patrons
-            .filter { patron -> patronGold.getOrDefault(patron, 0.0) < 4.0 }
-        patrons -= departingPatrons
-        patronGold -= departingPatrons
-        departingPatrons.forEach { patron ->
-            narrate("${player.name} sees $patron departing the tavern")
-        }
-        narrate("There are still some patrons in the tavern")
-        narrate(patrons.joinToString())
+        placeOrder(patrons.random(), menuItems.random())
     }
 
     private fun placeOrder(

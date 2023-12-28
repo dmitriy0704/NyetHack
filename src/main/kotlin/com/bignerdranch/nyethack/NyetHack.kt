@@ -7,14 +7,7 @@ fun main() {
     val playerName = promptHeroName()
     player = Player(playerName)
     //changeNarratorMood()
-    player.prophesize()
-    var currentRoom: Room = Tavern()
-    val mortality = if (player.isImmortal) "an immortal" else "a mortal"
-    narrate("${player.name} of ${player.hometown}, ${player.title}, is in ${currentRoom.description()}")
-    narrate("${player.name}, $mortality, has ${player.healthPoints} health points")
-    currentRoom.enterRoom()
-    player.castFireBall()
-    player.prophesize()
+    Game.play()
 }
 
 private fun promptHeroName(): String {
@@ -30,4 +23,35 @@ private fun promptHeroName(): String {
     return input*/
     println("Madrigal")
     return "Madrigal"
+}
+
+object Game {
+
+    private var currentRoom: Room = TownSquare()
+    private var currentPosition = Coordinate(0, 0)
+
+    init {
+        narrate("Welcome, adventurer!")
+        val mortality = if (player.isImmortal) "an immortal" else "a mortal"
+        narrate("${player.name}, $mortality, has ${player.healthPoints} health points")
+    }
+
+    fun play() {
+        while (true) {
+            narrate("${player.name} of ${player.hometown}, ${player.title}, is in ${currentRoom.description()}")
+            currentRoom.enterRoom()
+            print("> Enter you command: ")
+            GameInput(readLine()).processCommand()
+        }
+    }
+
+    private class GameInput(arg: String?) {
+        private val input = arg ?: ""
+        val command = input.split(" ")[0]
+        val argument = input.split(" ").getOrElse(1) { "" }
+
+        fun processCommand() = when (command.lowercase()) {
+            else -> narrate("I`m not sure what you`re trying to do")
+        }
+    }
 }

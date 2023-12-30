@@ -77,6 +77,16 @@ object Game {
             input.split(" ").getOrElse(1) { "" }
 
         fun processCommand() = when (command.lowercase()) {
+            "move" -> {
+                val direction = Direction.values()
+                    .firstOrNull { it.name.equals(argument, ignoreCase = true) }
+                if (direction != null) {
+                    move(direction)
+                } else {
+                    narrate("I don`t know what direction that is")
+                }
+            }
+
             else -> narrate("I`m not sure what you`re trying to do")
         }
     }

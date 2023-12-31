@@ -3,14 +3,15 @@ package com.bignerdranch.nyethack
 class Player(
     initialName: String,
     val hometown: String = "Neversummer",
-    var healthPoints: Int,
+    override var healthPoints: Int,
     val isImmortal: Boolean
-) {
-    var name = initialName
+) : Fightable {
+    override var name = initialName
         get() = field.replaceFirstChar { it.uppercase() }
         private set(value) {
             field = value.trim()
         }
+
 
     val title: String
         get() = when {
@@ -20,17 +21,8 @@ class Player(
             else -> "The renowned Hero"
         }
 
-    val prophecy by lazy {
-        narrate("$name embarks on an arduous quest to locate a fortune teller")
-        Thread.sleep(3000)
-        narrate("The fortune teller bestows a prophecy upon $name")
-        "An intrepid hero from $hometown shall some day " + listOf(
-            "form an unlikely bond between two warring factions",
-            "take possession of an otherworldly blade",
-            "bring the gift of creation back to the world",
-            "best the world-eater"
-        ).random()
-    }
+    override val diceCount = 3
+    override val diceSides = 4
 
     init {
         require(healthPoints > 0) { "healthPoints must be greater than zero" }
@@ -47,6 +39,24 @@ class Player(
         }
     }
 
+    val prophecy by lazy {
+        narrate("$name embarks on an arduous quest to locate a fortune teller")
+        Thread.sleep(3000)
+        narrate("The fortune teller bestows a prophecy upon $name")
+        "An intrepid hero from $hometown shall some day " + listOf(
+            "form an unlikely bond between two warring factions",
+            "take possession of an otherworldly blade",
+            "bring the gift of creation back to the world",
+            "best the world-eater"
+        ).random()
+    }
+
+    override fun takeDamage(damage: Int) {
+        if(!isImmortal){
+            healthPoints -= damage
+        }
+    }
+
     fun castFireBall(numFireballs: Int = 2) {
         narrate("A glass of Fireball springs into existence (x$numFireballs)")
     }
@@ -56,7 +66,7 @@ class Player(
         name = newName
     }
 
-    fun prophesize(){
+    fun prophesize() {
         narrate("$name thinks about their future")
         narrate("A fortune teller told Madrigal, \"$prophecy\"  ")
     }

@@ -9,6 +9,15 @@ fun main() {
     val playerName = promptHeroName()
     player = Player(playerName)
     //changeNarratorMood()
+    val lootBoxOne: LootBox<Fedora> = LootBox(Fedora("a generic-looking fedora", 15))
+    val lootBoxTwo: LootBox<Gemstones> = LootBox(Gemstones(150))
+    repeat(2) {
+        narrate(
+            lootBoxOne.takeLoot()?.let {
+                "The hero retrieves ${it.name} from the box"
+            } ?: "The box is empty"
+        )
+    }
     Game.play()
 }
 
@@ -83,23 +92,23 @@ object Game {
     fun fight() {
         val monsterRoom = currentRoom as? MonsterRoom
         val currentMonster = monsterRoom?.monster
-        if(currentMonster == null){
+        if (currentMonster == null) {
             narrate("There`s nothing to fight here")
             return
         }
 
-        while (player.healthPoints > 0 && currentMonster.healthPoints > 0){
+        while (player.healthPoints > 0 && currentMonster.healthPoints > 0) {
             player.attack(currentMonster)
-            if(currentMonster.healthPoints > 0){
+            if (currentMonster.healthPoints > 0) {
                 currentMonster.attack(player)
             }
             Thread.sleep(1000)
         }
 
-        if(player.healthPoints <= 0){
+        if (player.healthPoints <= 0) {
             narrate("You have been defeated! Thanks for playing")
             exitProcess(0)
-        } else{
+        } else {
             narrate("${currentMonster.name} has been defeated")
             monsterRoom.monster = null
         }

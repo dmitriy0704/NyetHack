@@ -12,7 +12,6 @@ class Player(
             field = value.trim()
         }
 
-
     val title: String
         get() = when {
             name.all { it.isDigit() } -> "The Identifiable"
@@ -51,8 +50,11 @@ class Player(
         ).random()
     }
 
+    val inventory = mutableListOf<Loot>()
+    var gold = 0
+
     override fun takeDamage(damage: Int) {
-        if(!isImmortal){
+        if (!isImmortal) {
             healthPoints -= damage
         }
     }

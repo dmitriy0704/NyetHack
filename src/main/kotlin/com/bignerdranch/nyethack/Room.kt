@@ -25,17 +25,5 @@ open class MonsterRoom(
     }
 }
 
-class TownSquare : Room("The Town Square") {
 
-    override val status = "Busting"
-    private val bellSong = "GWONG"
-    final override fun enterRoom() {
-        narrate("The villagers rally and cheer as the hero enters")
-        ringBell()
-    }
-
-    fun ringBell() {
-        narrate("The bell tower announces the hero`s presence: $bellSong")
-    }
-}
 
